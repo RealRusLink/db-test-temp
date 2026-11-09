@@ -45,14 +45,16 @@ create table Showing(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     management_id UUID NOT NULL,
     buyer_id UUID NOT NULL,
-    time TIMESTAMP NOT NULL
+    time TIMESTAMP NOT NULL,
+    CONSTRAINT management_FK FOREIGN KEY(management_id) REFERENCES Management,
+    CONSTRAINT client_FK FOREIGN KEY(buyer_id) REFERENCES Client
 );
 
 create table Sell(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    management_id UUID NOT NULL,
+    showing_id UUID UNIQUE NOT NULL,
     time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     price decimal NOT NULL,
-    CONSTRAINT management_FK FOREIGN KEY(management_id) REFERENCES Management,
+    CONSTRAINT showing_FK FOREIGN KEY(showing_id) REFERENCES Showing,
     CONSTRAINT price_limit CHECK(price > 0)
 );

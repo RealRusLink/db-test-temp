@@ -17,8 +17,10 @@ with first_shows as (
     group by re.id)
 
 update RealEstate re
-set re.price = re.price / 2
-where
-(select first_show_time from first_shows where first_shows.estate_id = re.id)
->
-(select avg(first_show_time) from first_shows)
+set price = price / 2
+from first_shows fs
+where re.id = fs.estate_id
+  and fs.first_show_time > (
+      select to_timestamp(avg(extract(epoch from first_show_time)))
+      from first_shows
+  );
