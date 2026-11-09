@@ -1,0 +1,54 @@
+erDiagram
+    RealEstate }o--|| Client : owns
+    RealEstate }o--|| EstateType : is
+    RealEstate ||--o{ Management : managed
+    Agent |o--o{ Management : manages
+    Agent }o--|| EstateType : specialized
+    Showing }o--|| Client : buyer
+    Showing }o--|| Management : linked
+    Showing ||--o| Sell : sold
+
+    RealEstate {
+        uuid id PK
+        uuid type_id FK
+        uuid owner_id FK
+        string address
+        decimal price
+        uint rooms
+        timestamp registration
+    }
+
+    EstateType {
+        uuid id PK
+        string type
+    }
+
+    Management {
+        uuid id PK
+        uuid estate_id FK
+        uuid agent_id FK "nullable"
+    }
+
+    Agent {
+        uuid id PK
+        uuid type_id FK
+    }
+
+    Client {
+        uuid id PK
+        string contact
+    }
+
+    Showing {
+        uuid id PK
+        uuid management_id FK
+        uuid buyer FK
+        timestamp time
+    }
+
+    Sell {
+        uuid id PK
+        uuid showing_id FK
+        timestamp time
+        decimal price
+    }
